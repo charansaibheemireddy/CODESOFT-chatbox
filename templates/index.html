@@ -3,64 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nova AI - Intelligent Chatbot</title>
-    <link rel="stylesheet" href="/static/style.css">
+    <title>Nexus AI | Modern Intelligence Hub</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <div class="background-glow glow-1"></div>
-    <div class="background-glow glow-2"></div>
+    <div class="app-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="brand">
+                <div class="logo-icon"><i class="fa-solid fa-bolt"></i></div>
+                <span>Nexus AI</span>
+            </div>
 
-    <div class="chat-container">
-        <header class="chat-header">
-            <div class="bot-info">
-                <div class="avatar">
-                    <i class="fa-solid fa-robot"></i>
-                    <span class="online-indicator"></span>
-                </div>
-                <div>
-                    <h2>Nova AI</h2>
-                    <span class="status">Online & Ready</span>
+            <button class="new-chat-btn" onclick="startNewChat()">
+                <i class="fa-solid fa-plus"></i> New Conversation
+            </button>
+
+            <div class="quick-nav">
+                <span class="nav-title">Quick Actions</span>
+                <button class="nav-item" onclick="sendPrompt('What time and date is it?')">
+                    <i class="fa-regular fa-clock"></i> System Time
+                </button>
+                <button class="nav-item" onclick="sendPrompt('Tell me a developer joke')">
+                    <i class="fa-solid fa-face-laugh-beam"></i> Tell a Joke
+                </button>
+                <button class="nav-item" onclick="sendPrompt('Give me a coding tip')">
+                    <i class="fa-solid fa-lightbulb"></i> Coding Tip
+                </button>
+                <button class="nav-item" onclick="sendPrompt('What are your features?')">
+                    <i class="fa-solid fa-list-check"></i> Command List
+                </button>
+            </div>
+
+            <div class="sidebar-footer">
+                <div class="user-badge">
+                    <div class="user-avatar">U</div>
+                    <div class="user-meta">
+                        <span class="user-name">Developer</span>
+                        <span class="user-status">Online</span>
+                    </div>
                 </div>
             </div>
-            <button id="clearChat" title="Clear conversation" class="icon-btn">
-                <i class="fa-solid fa-trash-can"></i>
-            </button>
-        </header>
+        </aside>
 
-        <div class="chat-body" id="chatBody">
-            <div class="message bot-message">
-                <div class="message-content">
-                    👋 Hello! I am <b>Nova AI</b>, your virtual assistant. How can I assist you today?
+        <!-- Main Chat Area -->
+        <main class="main-content">
+            <header class="topbar">
+                <div class="engine-badge">
+                    <span class="pulse-dot"></span> Powered by Python & Minimax NLP
                 </div>
-                <span class="timestamp">Just now</span>
+                <div class="topbar-actions">
+                    <button class="icon-action" onclick="clearMessages()" title="Clear Chat">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </div>
+            </header>
+
+            <div class="chat-viewport" id="chatViewport">
+                <!-- Welcome Banner -->
+                <div class="welcome-card" id="welcomeCard">
+                    <div class="hero-icon"><i class="fa-solid fa-brain"></i></div>
+                    <h2>How can I assist your workflow today?</h2>
+                    <p>Select a quick action or start typing below to interact directly with your Python backend.</p>
+                </div>
+
+                <div class="messages-container" id="messagesContainer"></div>
             </div>
-        </div>
 
-        <div class="chips-wrapper">
-            <button class="chip" onclick="sendQuickPrompt('What is today\'s date and time?')">🕒 Time</button>
-            <button class="chip" onclick="sendQuickPrompt('Tell me a programming joke')">😂 Joke</button>
-            <button class="chip" onclick="sendQuickPrompt('Give me a coding tip')">💡 Tip</button>
-            <button class="chip" onclick="sendQuickPrompt('What can you do?')">❓ Help</button>
-        </div>
-
-        <form class="chat-input-area" id="chatForm">
-            <button type="button" id="voiceBtn" class="action-btn" title="Voice Input">
-                <i class="fa-solid fa-microphone"></i>
-            </button>
-            <input 
-                type="text" 
-                id="userInput" 
-                placeholder="Type your query here..." 
-                autocomplete="off" 
-                required
-            />
-            <button type="submit" id="sendBtn" class="action-btn send-btn" title="Send message">
-                <i class="fa-solid fa-paper-plane"></i>
-            </button>
-        </form>
+            <!-- Input Bar Area -->
+            <div class="input-wrapper">
+                <form id="chatForm" class="input-container">
+                    <input 
+                        type="text" 
+                        id="userQuery" 
+                        placeholder="Message Nexus AI or ask for a calculation..." 
+                        autocomplete="off"
+                        required
+                    />
+                    <button type="submit" id="sendBtn" class="send-action">
+                        <i class="fa-solid fa-arrow-up"></i>
+                    </button>
+                </form>
+            </div>
+        </main>
     </div>
 
-    <script src="/static/script.js"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
