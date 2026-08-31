@@ -1,103 +1,113 @@
-const chatBody = document.getElementById('chatBody');
 const chatForm = document.getElementById('chatForm');
-const userInput = document.getElementById('userInput');
-const clearChatBtn = document.getElementById('clearChat');
-const voiceBtn = document.getElementById('voiceBtn');
+const userQuery = document.getElementById('userQuery');
+const messagesContainer = document.getElementById('messagesContainer');
+const welcomeCard = document.getElementById('welcomeCard');
+const chatViewport = document.getElementById('chatViewport');
 
-// Send Message Handler
+// Form Submit Handler
 chatForm.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const message = userInput.value.trim();
+    const message = userQuery.value.trim();
     if (!message) return;
 
-    // Display user message
+    // Remove welcome placeholder on first interaction
+    if (welcomeCard) {
+        welcomeCard.style.display = 'none';
+    }
+
+    // 1. Render User Message
     appendMessage(message, 'user');
-    userInput.value = '';
+    userQuery.value = '';
 
-    // Show AI typing animation
-    showTypingIndicator();
+    // 2. Show Animated Typing Indicator
+    showTyping();
 
+    // 3. Send Request to Flask API
     try {
         const response = await fetch('/api/chat', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
             body: JSON.stringify({ message: message })
         });
 
+        removeTyping();
+
+        if (!response.ok) {
+            throw new Error(`Server responded with status: ${response.status}`);
+        }
+
         const data = await response.json();
-        removeTypingIndicator();
-        appendMessage(data.response, 'bot', data.timestamp);
+        appendMessage(data.response, 'bot');
     } catch (err) {
-        removeTypingIndicator();
-        appendMessage("⚠️ Could not connect to the Python server.", 'bot');
+        removeTyping();
+        console.error("Connection Error:", err);
+        appendMessage("⚠️ <b>Connection Error:</b> Ensure your Python server (`python app.py`) is running.", 'bot');
     }
 });
 
-// Append Message to UI
-function appendMessage(text, sender, time = null) {
-    const currentTime = time || new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    const msgDiv = document.createElement('div');
-    msgDiv.classList.add('message', `${sender}-message`);
+// Append Message Bubbles
+function appendMessage(htmlContent, sender) {
+    const row = document.createElement('div');
+    row.className = `message-row ${sender}`;
 
-    msgDiv.innerHTML = `
-        <div class="message-content">${text}</div>
-        <span class="timestamp">${currentTime}</span>
-    `;
+    const icon = sender === 'bot' 
+        ? '<i class="fa-solid fa-robot"></i>' 
+        : '<i class="fa-solid fa-user"></i>';
 
-    chatBody.appendChild(msgDiv);
-    chatBody.scrollTop = chatBody.scrollHeight;
+    if (sender === 'bot') {
+        row.innerHTML = `
+            <div class="avatar-bubble">${icon}</div>
+            <div class="bubble-content">${htmlContent}</div>
+        `;
+    } else {
+        row.innerHTML = `
+            <div class="bubble-content">${htmlContent}</div>
+            <div class="avatar-bubble">${icon}</div>
+        `;
+    }
+
+    messagesContainer.appendChild(row);
+    chatViewport.scrollTop = chatViewport.scrollHeight;
 }
 
-// Quick Chip Action
-function sendQuickPrompt(promptText) {
-    userInput.value = promptText;
+// Typing Indicator Helpers
+function showTyping() {
+    const indicator = document.createElement('div');
+    indicator.id = 'activeTyping';
+    indicator.className = 'message-row bot';
+    indicator.innerHTML = `
+        <div class="avatar-bubble"><i class="fa-solid fa-robot"></i></div>
+        <div class="bubble-content typing">
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+        </div>
+    `;
+    messagesContainer.appendChild(indicator);
+    chatViewport.scrollTop = chatViewport.scrollHeight;
+}
+
+function removeTyping() {
+    const active = document.getElementById('activeTyping');
+    if (active) active.remove();
+}
+
+// Trigger Prompts from Sidebar
+function sendPrompt(text) {
+    userQuery.value = text;
     chatForm.dispatchEvent(new Event('submit'));
 }
 
-// Typing Indicator
-function showTypingIndicator() {
-    const indicator = document.createElement('div');
-    indicator.id = 'typingIndicator';
-    indicator.className = 'typing-indicator';
-    indicator.innerHTML = '<span class="dot"></span><span class="dot"></span><span class="dot"></span>';
-    chatBody.appendChild(indicator);
-    chatBody.scrollTop = chatBody.scrollHeight;
+// Clear Messages
+function clearMessages() {
+    messagesContainer.innerHTML = '';
+    if (welcomeCard) welcomeCard.style.display = 'flex';
 }
 
-function removeTypingIndicator() {
-    const indicator = document.getElementById('typingIndicator');
-    if (indicator) indicator.remove();
-}
-
-// Clear Chat
-clearChatBtn.addEventListener('click', () => {
-    chatBody.innerHTML = `
-        <div class="message bot-message">
-            <div class="message-content">✨ Chat cleared. How can I help you?</div>
-            <span class="timestamp">Just now</span>
-        </div>
-    `;
-});
-
-// Voice Recognition (Web Speech API)
-if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    const recognition = new SpeechRecognition();
-    recognition.lang = 'en-US';
-
-    voiceBtn.addEventListener('click', () => {
-        voiceBtn.style.color = '#ef4444';
-        recognition.start();
-    });
-
-    recognition.onresult = (event) => {
-        userInput.value = event.results[0][0].transcript;
-        voiceBtn.style.color = '#fff';
-        chatForm.dispatchEvent(new Event('submit'));
-    };
-
-    recognition.onerror = () => { voiceBtn.style.color = '#fff'; };
-    recognition.onend = () => { voiceBtn.style.color = '#fff'; };
-} else {
-    voiceBtn.style.display = 'none'; // Hide if browser doesn't support
+function startNewChat() {
+    clearMessages();
+    userQuery.focus();
 }
