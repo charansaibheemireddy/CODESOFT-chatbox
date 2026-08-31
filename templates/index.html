@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nova AI - Intelligent Chatbot</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="background-glow glow-1"></div>
+    <div class="background-glow glow-2"></div>
+
+    <div class="chat-container">
+        <header class="chat-header">
+            <div class="bot-info">
+                <div class="avatar">
+                    <i class="fa-solid fa-robot"></i>
+                    <span class="online-indicator"></span>
+                </div>
+                <div>
+                    <h2>Nova AI</h2>
+                    <span class="status">Online & Ready</span>
+                </div>
+            </div>
+            <button id="clearChat" title="Clear conversation" class="icon-btn">
+                <i class="fa-solid fa-trash-can"></i>
+            </button>
+        </header>
+
+        <div class="chat-body" id="chatBody">
+            <div class="message bot-message">
+                <div class="message-content">
+                    👋 Hello! I am <b>Nova AI</b>, your virtual assistant. How can I assist you today?
+                </div>
+                <span class="timestamp">Just now</span>
+            </div>
+        </div>
+
+        <div class="chips-wrapper">
+            <button class="chip" onclick="sendQuickPrompt('What is today\'s date and time?')">🕒 Time</button>
+            <button class="chip" onclick="sendQuickPrompt('Tell me a programming joke')">😂 Joke</button>
+            <button class="chip" onclick="sendQuickPrompt('Give me a coding tip')">💡 Tip</button>
+            <button class="chip" onclick="sendQuickPrompt('What can you do?')">❓ Help</button>
+        </div>
+
+        <form class="chat-input-area" id="chatForm">
+            <button type="button" id="voiceBtn" class="action-btn" title="Voice Input">
+                <i class="fa-solid fa-microphone"></i>
+            </button>
+            <input 
+                type="text" 
+                id="userInput" 
+                placeholder="Type your query here..." 
+                autocomplete="off" 
+                required
+            />
+            <button type="submit" id="sendBtn" class="action-btn send-btn" title="Send message">
+                <i class="fa-solid fa-paper-plane"></i>
+            </button>
+        </form>
+    </div>
+
+    <script src="/static/script.js"></script>
+</body>
+</html>
