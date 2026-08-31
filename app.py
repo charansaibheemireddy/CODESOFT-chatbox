@@ -5,75 +5,76 @@ from flask import Flask, render_template, request, jsonify
 
 app = Flask(__name__)
 
+# Sample intelligent knowledge base
 JOKES = [
     "Why do programmers prefer dark mode? Because light attracts bugs! 🐛",
-    "There are 10 types of people in the world: those who understand binary, and those who don't.",
-    "A SQL query walks into a bar, walks up to two tables and asks, 'Can I join you?'"
+    "There are 10 types of people: those who understand binary, and those who don't.",
+    "A SQL query walks into a bar, walks up to two tables and asks: 'Can I join you?'",
+    "Why did the JavaScript developer wear glasses? Because they didn't C#."
 ]
 
-TIPS = [
-    "Tip: Always write unit tests before refactoring complex logic!",
-    "Tip: Use descriptive variable names — code is read more often than it is written.",
-    "Tip: Don't forget `git status` before making a giant commit!"
+TECH_TIPS = [
+    "💡 Tip: Use descriptive variable names — clean code is self-documenting.",
+    "💡 Tip: Always sanitize user inputs to prevent SQL injection and XSS.",
+    "💡 Tip: Use Git branches for features to keep your main branch deployment-ready."
 ]
 
 def get_chatbot_response(user_input):
     user_input = user_input.lower().strip()
     
     # 1. Greetings
-    if re.search(r'\b(hello|hi|hey|hola|greetings|sup)\b', user_input):
-        return "👋 Hello! I am your AI Assistant. How can I help you today?"
+    if re.search(r'\b(hello|hi|hey|hola|greetings|sup|yo)\b', user_input):
+        return "👋 Hello there! I'm <b>Nexus AI</b>. Ask me anything, request a code tip, or try some math!"
         
     # 2. Well-being
-    elif re.search(r'\b(how are you|how\'s it going|how do you do|what\'s up)\b', user_input):
-        return "⚡ I am running at 100% optimal performance and ready to assist you!"
+    elif re.search(r'\b(how are you|how\'s it going|how do you do)\b', user_input):
+        return "⚡ Systems running at 100% efficiency. Ready to build something great today!"
         
-    # 3. Date and Time
-    elif re.search(r'\b(time|date|day|clock)\b', user_input):
+    # 3. Date & Time
+    elif re.search(r'\b(time|date|day|clock|today)\b', user_input):
         now = datetime.now()
-        return f"🕒 Current date is <b>{now.strftime('%A, %B %d, %Y')}</b> and the time is <b>{now.strftime('%I:%M:%S %p')}</b>."
+        return f"🕒 Today is <b>{now.strftime('%A, %B %d, %Y')}</b> and the system time is <b>{now.strftime('%I:%M:%S %p')}</b>."
         
-    # 4. Identity & Purpose
-    elif re.search(r'\b(who are you|your name|what do you do|bot info)\b', user_input):
-        return "🤖 I am <b>Nova AI</b>, a rule-based intelligent chatbot developed with Python & Flask."
+    # 4. Identity
+    elif re.search(r'\b(who are you|your name|what are you|creator)\b', user_input):
+        return "🤖 I am <b>Nexus AI</b>, an intelligent rule-based virtual assistant powered by Python & Flask!"
 
     # 5. Jokes
-    elif re.search(r'\b(joke|funny|laugh|make me smile)\b', user_input):
-        return random.choice(JOKES)
+    elif re.search(r'\b(joke|funny|laugh|humor)\b', user_input):
+        return f"🎭 {random.choice(JOKES)}"
 
-    # 6. Coding Tips & Inspiration
+    # 6. Tips & Motivation
     elif re.search(r'\b(tip|advice|quote|motivation|inspire)\b', user_input):
-        return random.choice(TIPS)
+        return random.choice(TECH_TIPS)
 
-    # 7. Basic Math Expressions (e.g., "calculate 25 * 4" or "what is 10 + 2")
-    elif re.search(r'\b(calculate|what is|compute)\b', user_input):
-        expression = re.sub(r'[^0-9+\-*/().]', '', user_input)
-        if expression:
+    # 7. Math evaluation (e.g. "calc 12 * 8" or "what is 50 + 25")
+    elif re.search(r'\b(calculate|what is|compute|calc|\d+\s*[\+\-\*\/]\s*\d+)\b', user_input):
+        clean_expr = re.sub(r'[^0-9+\-*/().]', '', user_input)
+        if clean_expr:
             try:
-                # Safe evaluation of basic arithmetic
-                result = eval(expression, {"__builtins__": None}, {})
-                return f"🔢 Result: <b>{expression} = {result}</b>"
+                result = eval(clean_expr, {"__builtins__": None}, {})
+                return f"🔢 <b>Calculation Result:</b> <code>{clean_expr} = {result}</code>"
             except Exception:
-                return "I couldn't calculate that math expression. Please try something like `calculate 12 * 8`."
+                return "⚠️ Could not compute that expression. Example format: <code>calculate 25 * 4</code>"
 
-    # 8. Help & Features
-    elif re.search(r'\b(help|features|commands|capabilities)\b', user_input):
+    # 8. Help / Capabilities
+    elif re.search(r'\b(help|commands|features|menu)\b', user_input):
         return (
-            "💡 <b>Here is what you can ask me:</b><br>"
-            "• Ask for <i>time</i> or <i>date</i><br>"
-            "• Tell me to tell a <i>joke</i><br>"
-            "• Ask for a <i>coding tip</i><br>"
-            "• Calculate expressions (e.g., <i>calculate 45 * 12</i>)<br>"
-            "• Or just say hello!"
+            "✨ <b>Available Capabilities:</b><br>"
+            "• 🕒 <i>'What time is it?'</i><br>"
+            "• 🎭 <i>'Tell me a joke'</i><br>"
+            "• 💡 <i>'Give me a developer tip'</i><br>"
+            "• 🔢 <i>'Calculate 128 * 4'</i><br>"
+            "• 🚪 <i>'Goodbye'</i> to finish"
         )
 
     # 9. Farewell
     elif re.search(r'\b(bye|goodbye|exit|see you|cya)\b', user_input):
-        return "👋 Goodbye! Have a fantastic day ahead. Feel free to return anytime!"
+        return "👋 Have a fantastic day! Session is ready whenever you return."
 
     # 10. Fallback
     else:
-        return "🤔 I didn't quite catch that. Try asking for <i>'help'</i> to see what I can do!"
+        return "🤔 I couldn't match that query directly. Type <b>'help'</b> to see available commands or try rephrasing!"
 
 @app.route('/')
 def home():
@@ -81,17 +82,20 @@ def home():
 
 @app.route('/api/chat', methods=['POST'])
 def chat():
-    data = request.get_json() or {}
-    user_message = data.get('message', '')
-    
-    if not user_message.strip():
-        return jsonify({'response': "Please provide a valid message."}), 400
+    try:
+        data = request.get_json(force=True)
+        user_message = data.get('message', '')
         
-    bot_reply = get_chatbot_response(user_message)
-    return jsonify({
-        'response': bot_reply,
-        'timestamp': datetime.now().strftime("%I:%M %p")
-    })
+        if not user_message.strip():
+            return jsonify({'response': "Please type a message first!"}), 400
+            
+        bot_reply = get_chatbot_response(user_message)
+        return jsonify({
+            'response': bot_reply,
+            'timestamp': datetime.now().strftime("%I:%M %p")
+        })
+    except Exception as e:
+        return jsonify({'response': f"Server Error: {str(e)}"}), 500
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
