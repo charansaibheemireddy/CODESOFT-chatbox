@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nexus AI | Modern Intelligence Hub</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Nexus AI | Intelligent Chatbot</title>
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
@@ -38,9 +38,9 @@
 
             <div class="sidebar-footer">
                 <div class="user-badge">
-                    <div class="user-avatar">U</div>
+                    <div class="user-avatar"><i class="fa-solid fa-user"></i></div>
                     <div class="user-meta">
-                        <span class="user-name">Developer</span>
+                        <span class="user-name">Guest User</span>
                         <span class="user-status">Online</span>
                     </div>
                 </div>
@@ -51,27 +51,24 @@
         <main class="main-content">
             <header class="topbar">
                 <div class="engine-badge">
-                    <span class="pulse-dot"></span> Powered by Python & Minimax NLP
+                    <span class="pulse-dot"></span> Rule-Based AI Engine Active
                 </div>
-                <div class="topbar-actions">
-                    <button class="icon-action" onclick="clearMessages()" title="Clear Chat">
-                        <i class="fa-solid fa-trash"></i>
-                    </button>
-                </div>
+                <button class="icon-action" onclick="clearMessages()" title="Clear Chat">
+                    <i class="fa-solid fa-trash"></i>
+                </button>
             </header>
 
             <div class="chat-viewport" id="chatViewport">
-                <!-- Welcome Banner -->
                 <div class="welcome-card" id="welcomeCard">
                     <div class="hero-icon"><i class="fa-solid fa-brain"></i></div>
-                    <h2>How can I assist your workflow today?</h2>
-                    <p>Select a quick action or start typing below to interact directly with your Python backend.</p>
+                    <h2>How can I assist you today?</h2>
+                    <p>Select a quick action on the left or type your query below.</p>
                 </div>
 
                 <div class="messages-container" id="messagesContainer"></div>
             </div>
 
-            <!-- Input Bar Area -->
+            <!-- Input Bar -->
             <div class="input-wrapper">
                 <form id="chatForm" class="input-container">
                     <input 
@@ -81,7 +78,7 @@
                         autocomplete="off"
                         required
                     />
-                    <button type="submit" id="sendBtn" class="send-action">
+                    <button type="submit" class="send-action">
                         <i class="fa-solid fa-arrow-up"></i>
                     </button>
                 </form>
@@ -89,6 +86,6 @@
         </main>
     </div>
 
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script src="script.js"></script>
 </body>
 </html>
