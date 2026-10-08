@@ -47,5 +47,8 @@ ULTROX-AI/
 │
 ├── index.html
 ├── style.css
+├── app.py
+├── chatclient.java
 ├── script.js
 └── README.md
+
