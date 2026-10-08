@@ -3,89 +3,424 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nexus AI | Intelligent Chatbot</title>
+
+    <meta name="description" content="ULTROX - Intelligent cybersecurity and developer assistant">
+    <meta name="theme-color" content="#080c16">
+
+    <title>ULTROX | Intelligent AI Assistant</title>
+
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body>
-    <div class="app-layout">
-        <!-- Sidebar -->
-        <aside class="sidebar">
-            <div class="brand">
-                <div class="logo-icon"><i class="fa-solid fa-bolt"></i></div>
-                <span>Nexus AI</span>
+
+<div class="app-layout">
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <aside class="sidebar">
+
+        <div class="brand">
+            <div class="logo-icon">
+                <i class="fa-solid fa-bolt"></i>
             </div>
 
-            <button class="new-chat-btn" onclick="startNewChat()">
-                <i class="fa-solid fa-plus"></i> New Conversation
+            <div class="brand-text">
+                <span class="brand-name">ULTROX</span>
+                <span class="brand-subtitle">AI ASSISTANT</span>
+            </div>
+        </div>
+
+        <button class="new-chat-btn" id="newChatBtn">
+            <i class="fa-solid fa-plus"></i>
+            <span>New Conversation</span>
+        </button>
+
+        <div class="quick-nav">
+
+            <span class="nav-title">Quick Actions</span>
+
+            <button class="nav-item"
+                    data-prompt="What time and date is it?">
+                <i class="fa-regular fa-clock"></i>
+                <span>System Time</span>
             </button>
 
-            <div class="quick-nav">
-                <span class="nav-title">Quick Actions</span>
-                <button class="nav-item" onclick="sendPrompt('What time and date is it?')">
-                    <i class="fa-regular fa-clock"></i> System Time
-                </button>
-                <button class="nav-item" onclick="sendPrompt('Tell me a developer joke')">
-                    <i class="fa-solid fa-face-laugh-beam"></i> Tell a Joke
-                </button>
-                <button class="nav-item" onclick="sendPrompt('Give me a coding tip')">
-                    <i class="fa-solid fa-lightbulb"></i> Coding Tip
-                </button>
-                <button class="nav-item" onclick="sendPrompt('What are your features?')">
-                    <i class="fa-solid fa-list-check"></i> Command List
-                </button>
+            <button class="nav-item"
+                    data-prompt="Tell me a developer joke">
+                <i class="fa-solid fa-face-laugh-beam"></i>
+                <span>Tell a Joke</span>
+            </button>
+
+            <button class="nav-item"
+                    data-prompt="Give me a coding tip">
+                <i class="fa-solid fa-code"></i>
+                <span>Coding Tip</span>
+            </button>
+
+            <button class="nav-item"
+                    data-prompt="Give me a cybersecurity tip">
+                <i class="fa-solid fa-shield-halved"></i>
+                <span>Security Tip</span>
+            </button>
+
+            <button class="nav-item"
+                    data-prompt="What are your features?">
+                <i class="fa-solid fa-list-check"></i>
+                <span>Command List</span>
+            </button>
+
+            <button class="nav-item"
+                    data-prompt="Run a system check">
+                <i class="fa-solid fa-microchip"></i>
+                <span>System Check</span>
+            </button>
+
+        </div>
+
+        <div class="sidebar-info">
+
+            <div class="info-row">
+                <i class="fa-solid fa-circle-check"></i>
+                <span>Local AI Engine</span>
             </div>
 
-            <div class="sidebar-footer">
-                <div class="user-badge">
-                    <div class="user-avatar"><i class="fa-solid fa-user"></i></div>
-                    <div class="user-meta">
-                        <span class="user-name">Guest User</span>
-                        <span class="user-status">Online</span>
+            <div class="info-row">
+                <i class="fa-solid fa-shield-halved"></i>
+                <span>Security Mode</span>
+            </div>
+
+        </div>
+
+        <div class="sidebar-footer">
+
+            <div class="user-badge">
+
+                <div class="user-avatar">
+                    <i class="fa-solid fa-user"></i>
+                </div>
+
+                <div class="user-meta">
+                    <span class="user-name">Guest User</span>
+                    <span class="user-status">
+                        <span class="status-dot"></span>
+                        Online
+                    </span>
+                </div>
+
+            </div>
+
+        </div>
+
+    </aside>
+
+
+    <!-- ================= MAIN CONTENT ================= -->
+
+    <main class="main-content">
+
+        <!-- Top Bar -->
+
+        <header class="topbar">
+
+            <div class="topbar-left">
+
+                <div class="mobile-brand">
+                    <div class="mobile-logo">
+                        <i class="fa-solid fa-bolt"></i>
                     </div>
+                    <span>ULTROX</span>
                 </div>
-            </div>
-        </aside>
 
-        <!-- Main Chat Area -->
-        <main class="main-content">
-            <header class="topbar">
                 <div class="engine-badge">
-                    <span class="pulse-dot"></span> Rule-Based AI Engine Active
+
+                    <span class="pulse-dot"></span>
+
+                    <span>ULTROX Engine Active</span>
+
                 </div>
-                <button class="icon-action" onclick="clearMessages()" title="Clear Chat">
+
+            </div>
+
+            <div class="topbar-actions">
+
+                <span class="shortcut-hint">
+                    <kbd>Ctrl</kbd>
+                    <span>+</span>
+                    <kbd>K</kbd>
+                </span>
+
+                <button
+                    class="icon-action"
+                    id="clearChatBtn"
+                    title="Clear Chat"
+                    aria-label="Clear Chat">
+
                     <i class="fa-solid fa-trash"></i>
-                </button>
-            </header>
 
-            <div class="chat-viewport" id="chatViewport">
-                <div class="welcome-card" id="welcomeCard">
-                    <div class="hero-icon"><i class="fa-solid fa-brain"></i></div>
-                    <h2>How can I assist you today?</h2>
-                    <p>Select a quick action on the left or type your query below.</p>
+                </button>
+
+            </div>
+
+        </header>
+
+
+        <!-- Chat Area -->
+
+        <div class="chat-viewport" id="chatViewport">
+
+            <!-- Welcome -->
+
+            <section class="welcome-card" id="welcomeCard">
+
+                <div class="hero-icon">
+
+                    <div class="hero-ring"></div>
+
+                    <i class="fa-solid fa-bolt"></i>
+
                 </div>
 
-                <div class="messages-container" id="messagesContainer"></div>
+                <div class="welcome-content">
+
+                    <div class="welcome-label">
+                        <span></span>
+                        ULTROX ONLINE
+                    </div>
+
+                    <h1>
+                        Intelligence at your
+                        <span>command.</span>
+                    </h1>
+
+                    <p>
+                        Ask questions, calculate values, explore cybersecurity,
+                        get coding tips, or discover what ULTROX can do.
+                    </p>
+
+                </div>
+
+
+                <!-- Quick Prompt Cards -->
+
+                <div class="prompt-grid">
+
+                    <button
+                        class="prompt-card"
+                        data-prompt="Give me a cybersecurity tip">
+
+                        <i class="fa-solid fa-shield-halved"></i>
+
+                        <div>
+                            <strong>Cybersecurity</strong>
+                            <small>Get a security tip</small>
+                        </div>
+
+                    </button>
+
+
+                    <button
+                        class="prompt-card"
+                        data-prompt="Give me a coding tip">
+
+                        <i class="fa-solid fa-code"></i>
+
+                        <div>
+                            <strong>Programming</strong>
+                            <small>Learn a coding tip</small>
+                        </div>
+
+                    </button>
+
+
+                    <button
+                        class="prompt-card"
+                        data-prompt="Calculate 25 * 8">
+
+                        <i class="fa-solid fa-calculator"></i>
+
+                        <div>
+                            <strong>Calculator</strong>
+                            <small>Perform calculations</small>
+                        </div>
+
+                    </button>
+
+
+                    <button
+                        class="prompt-card"
+                        data-prompt="What are your features?">
+
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+
+                        <div>
+                            <strong>Explore</strong>
+                            <small>See what I can do</small>
+                        </div>
+
+                    </button>
+
+                </div>
+
+            </section>
+
+
+            <!-- Messages -->
+
+            <div
+                class="messages-container"
+                id="messagesContainer">
             </div>
 
-            <!-- Input Bar -->
-            <div class="input-wrapper">
-                <form id="chatForm" class="input-container">
-                    <input 
-                        type="text" 
-                        id="userQuery" 
-                        placeholder="Message Nexus AI or ask for a calculation..." 
-                        autocomplete="off"
-                        required
-                    />
-                    <button type="submit" class="send-action">
-                        <i class="fa-solid fa-arrow-up"></i>
-                    </button>
-                </form>
+        </div>
+
+
+        <!-- Input Area -->
+
+        <div class="input-wrapper">
+
+            <div class="input-helper">
+
+                <span>
+                    <i class="fa-solid fa-shield-halved"></i>
+                    ULTROX protects your local conversation
+                </span>
+
+                <span>
+                    Press <kbd>Enter</kbd> to send
+                </span>
+
             </div>
-        </main>
+
+            <form
+                id="chatForm"
+                class="input-container"
+                autocomplete="off">
+
+                <button
+                    type="button"
+                    class="input-icon"
+                    id="commandBtn"
+                    title="Show commands"
+                    aria-label="Show commands">
+
+                    <i class="fa-solid fa-sliders"></i>
+
+                </button>
+
+                <input
+                    type="text"
+                    id="userQuery"
+                    placeholder="Ask ULTROX anything..."
+                    autocomplete="off"
+                    maxlength="500"
+                    aria-label="Message ULTROX"
+                    required
+                />
+
+                <button
+                    type="submit"
+                    class="send-action"
+                    id="sendBtn"
+                    title="Send message"
+                    aria-label="Send message">
+
+                    <i class="fa-solid fa-arrow-up"></i>
+
+                </button>
+
+            </form>
+
+            <div class="input-disclaimer">
+                ULTROX is a rule-based local assistant. Responses are generated
+                from its built-in knowledge and commands.
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<!-- Command Modal -->
+
+<div class="modal-overlay" id="commandModal">
+
+    <div class="command-modal">
+
+        <div class="modal-header">
+
+            <div>
+                <span class="modal-kicker">ULTROX</span>
+                <h2>Available Commands</h2>
+            </div>
+
+            <button
+                class="modal-close"
+                id="closeModalBtn"
+                aria-label="Close">
+
+                <i class="fa-solid fa-xmark"></i>
+
+            </button>
+
+        </div>
+
+
+        <div class="command-list">
+
+            <div class="command-row">
+                <code>hello</code>
+                <span>Start a conversation</span>
+            </div>
+
+            <div class="command-row">
+                <code>time</code>
+                <span>Show current time and date</span>
+            </div>
+
+            <div class="command-row">
+                <code>joke</code>
+                <span>Tell a developer joke</span>
+            </div>
+
+            <div class="command-row">
+                <code>tip</code>
+                <span>Get a coding tip</span>
+            </div>
+
+            <div class="command-row">
+                <code>security</code>
+                <span>Get a cybersecurity tip</span>
+            </div>
+
+            <div class="command-row">
+                <code>calculate 25 * 8</code>
+                <span>Perform a calculation</span>
+            </div>
+
+            <div class="command-row">
+                <code>features</code>
+                <span>Show ULTROX capabilities</span>
+            </div>
+
+            <div class="command-row">
+                <code>system check</code>
+                <span>Run local system check</span>
+            </div>
+
+        </div>
+
     </div>
 
-    <script src="script.js"></script>
+</div>
+
+
+<script src="script.js"></script>
+
 </body>
 </html>
